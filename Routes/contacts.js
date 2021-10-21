@@ -34,4 +34,30 @@ router.get('/', async (req,res) => {
         console.log(err);
     }
 })
+
+// delete contact
+router.delete('/:contactId', async (req, res) => {
+    try {
+        const removedContact = await Contact.deleteOne({ _id: req.params.contactId });
+        res.json(removedContact);
+    } catch (err) {
+        res.json({ message: err });
+    }
+});
+
+//patch 
+router.post('/:contactId', async function (req, res) {
+    try {
+        var updatedContact = await Contact.updateOne({ _id: req.params.contactId }, {
+            $set:{
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email
+            }
+        });
+        res.json(updatedContact);
+    } catch (err) {
+        res.json({ message: err });
+    }
+});
 module.exports = router;
