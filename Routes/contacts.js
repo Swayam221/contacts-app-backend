@@ -12,7 +12,7 @@ router.post('/', async (req,res) =>{
             email: req.body.email
         });
         const savedContact = await contact.save();
-        res.json(contactBook);
+        res.json(savedContact);
         console.log("contact saved successfully");
     }
     catch(err)
