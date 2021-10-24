@@ -60,4 +60,54 @@ router.post('/:contactId', async function (req, res) {
         res.json({ message: err });
     }
 });
+
+// search contacts
+router.get('/search/:query/', async (req, res) => {
+
+    let searchText = req.params.query;
+    searchText = searchText.trim();
+    var searchTexts = searchText.split(" ");
+    var searchTextList = [];
+    for (i = 0; i < searchTexts.length; i++) {
+        var reg = new RegExp(searchTexts[i], "i")
+        searchTextList.push({
+            firstName: {
+                $regex: reg
+            }
+        })
+        searchTextList.push({
+            lastName: {
+                $regex: reg
+            }
+        })
+        searchTextList.push({
+            email: {
+                $regex: reg
+            }
+        })
+    }
+
+    
+    // var fullTextSearchOptions = {
+    //     "$text": {
+    //         "$search": searchText
+    //     }
+    // };
+
+    var regexSearchOptions = {
+        $or: searchTextList
+    };
+    
+    
+    Contact.find(regexSearchOptions, { firstName: 1, lastName: 1, email:1, _id:1}, function (err, docs) {
+
+        if (err) {
+            res.json({ message: err });
+        } else if (docs) {
+            res.json(docs);
+        }
+
+    });
+})
+
 module.exports = router;
