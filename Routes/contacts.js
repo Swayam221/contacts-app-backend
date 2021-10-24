@@ -110,4 +110,19 @@ router.get('/search/:query/', async (req, res) => {
     });
 })
 
+
+// pagination
+router.get('/:page/:n', async (req,res) => {
+    var pg = parseInt(req.params.page);
+    var N = parseInt(req.params.n);
+    try{
+        var result = await Contact.find().skip(pg>0?(pg-1)*N:0).limit(N);
+        res.json(result);
+    }
+    catch(err){
+        res.json({message: err})
+        console.log(err);
+    }
+})
+
 module.exports = router;
