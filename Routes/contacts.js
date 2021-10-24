@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Contact = require('../Models/Contact');
 
-//add a book
+//add a contact
 router.post('/', async (req,res) =>{
     console.log(req.body.DatePublished)
     try{
@@ -23,7 +23,7 @@ router.post('/', async (req,res) =>{
 });
 
 
-//get all books
+//get all contacts
 router.get('/', async (req,res) => {
     try{
         var result = await Contact.find();
